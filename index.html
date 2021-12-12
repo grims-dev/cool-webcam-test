@@ -50,8 +50,8 @@
       }
 
       if (navigator.mediaDevices) {
-        (async () => {   
-          await initialiseCamera(userMediaParams);
+        (async () => {
+          await initialiseCamera(getUserMediaParams);
           await populateDevicesDropdown();
         })();
       } else {
