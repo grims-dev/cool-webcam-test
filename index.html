@@ -27,7 +27,9 @@
       let stream;
 
       devicesDropdown.addEventListener('change', async (e) => {
-        getUserMediaParams.video.deviceId = e.target.value;
+        getUserMediaParams.video.deviceId = {
+          exact: e.target.value,
+        }
         await initialiseUserMedia(getUserMediaParams);
       });
 
