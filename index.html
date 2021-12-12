@@ -18,7 +18,7 @@
       const video = document.querySelector('video');
       const errorMessage = document.getElementById('error');
       const devicesDropdown = document.getElementById('devices-dropdown');
-      const getUserMediaParams = {
+      let getUserMediaParams = {
         audio: false,
         video: true,
         deviceId: null,
@@ -26,7 +26,7 @@
 
       devicesDropdown.addEventListener('change', (e) => {
         getUserMediaParams.deviceId = e.target.value;
-        initialiseUserMedia(getUserMediaParams);
+        await initialiseUserMedia(getUserMediaParams);
       });
 
       async function initialiseUserMedia(userMediaParams) {
