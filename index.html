@@ -23,6 +23,7 @@
         video: true,
         deviceId: null,
       };
+      let stream;
 
       devicesDropdown.addEventListener('change', async (e) => {
         getUserMediaParams.deviceId = e.target.value;
@@ -31,7 +32,15 @@
 
       async function initialiseUserMedia(userMediaParams) {
         navigator.mediaDevices.getUserMedia(userMediaParams)
-          .then(mediaStream => video.srcObject = mediaStream)
+          .then(mediaStream => {
+            if (stream) {
+              stream.getTracks().forEach(track => track.stop());
+            }
+            stream = mediaStream;
+            video.srcObject = null;
+            video.srcObject = stream;
+            video.play();
+          })
           .catch(err => {
             console.log(err);
             errorMessage.innerText = err;
