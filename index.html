@@ -25,30 +25,28 @@
       };
 
       if (navigator.mediaDevices) {
-        navigator.mediaDevices.getUserMedia(getUserMediaParams)
-          .then(mediaStream => video.srcObject = mediaStream)
-          .then(
-            navigator.mediaDevices.enumerateDevices()
-              .then(devices => devices.forEach((device, i) => {
-                console.log(device);
-                if (device.kind === 'videoinput' && device.deviceId) {
-                  const newOption = document.createElement('option');
-                  newOption.id = device.deviceId;
-                  newOption.text = device.label || `Camera ${i + 1}`;
-                  devicesDropdown.add(newOption);
-                }
-              }))
-              .catch(err => {
-                console.log(err);
-                errorMessage.innerText = err;
-              })
-          )
-          .catch(err => {
-            console.log(err);
-            errorMessage.innerText = err;
-          });
-
-        
+        (async () => {   
+          await navigator.mediaDevices.getUserMedia(getUserMediaParams)
+            .then(mediaStream => video.srcObject = mediaStream)
+            .catch(err => {
+              console.log(err);
+              errorMessage.innerText = err;
+            });
+          await navigator.mediaDevices.enumerateDevices()
+            .then(devices => devices.forEach((device, i) => {
+              console.log(device);
+              if (device.kind === 'videoinput' && device.deviceId) {
+                const newOption = document.createElement('option');
+                newOption.id = device.deviceId;
+                newOption.text = device.label || `Camera ${i + 1}`;
+                devicesDropdown.add(newOption);
+              }
+            }))
+            .catch(err => {
+              console.log(err);
+              errorMessage.innerText = err;
+            })
+        })();        
       } else {
         errorMessage.innerText = 'Sorry, your browser does not support this feature.';
       }
