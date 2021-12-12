@@ -24,7 +24,7 @@
         deviceId: null,
       };
 
-      devicesDropdown.addEventListener('change', (e) => {
+      devicesDropdown.addEventListener('change', async (e) => {
         getUserMediaParams.deviceId = e.target.value;
         await initialiseUserMedia(getUserMediaParams);
       });
