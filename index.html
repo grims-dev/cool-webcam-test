@@ -24,7 +24,12 @@
         deviceId: null,
       };
 
-      async function initialiseCamera(userMediaParams) {   
+      devicesDropdown.addEventListener('change', (e) => {
+        getUserMediaParams.deviceId = e.target.value;
+        initialiseUserMedia(getUserMediaParams);
+      });
+
+      async function initialiseUserMedia(userMediaParams) {
         navigator.mediaDevices.getUserMedia(userMediaParams)
           .then(mediaStream => video.srcObject = mediaStream)
           .catch(err => {
@@ -38,7 +43,7 @@
           .then(devices => devices.forEach((device, i) => {
             if (device.kind === 'videoinput' && device.deviceId) {
               const newOption = document.createElement('option');
-              newOption.id = device.deviceId;
+              newOption.value = device.deviceId;
               newOption.text = device.label || `Camera ${i + 1}`;
               devicesDropdown.add(newOption);
             }
@@ -51,7 +56,8 @@
 
       if (navigator.mediaDevices) {
         (async () => {
-          await initialiseCamera(getUserMediaParams);
+          // getUserMedia must be called before enumerateDevices for correct permissions
+          await initialiseUserMedia(getUserMediaParams);
           await populateDevicesDropdown();
         })();
       } else {
