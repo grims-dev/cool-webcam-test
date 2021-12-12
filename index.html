@@ -20,13 +20,14 @@
       const devicesDropdown = document.getElementById('devices-dropdown');
       let getUserMediaParams = {
         audio: false,
-        video: true,
-        deviceId: null,
+        video: {
+          deviceId: null,
+        },
       };
       let stream;
 
       devicesDropdown.addEventListener('change', async (e) => {
-        getUserMediaParams.deviceId = e.target.value;
+        getUserMediaParams.video.deviceId = e.target.value;
         await initialiseUserMedia(getUserMediaParams);
       });
 
@@ -37,7 +38,6 @@
               stream.getTracks().forEach(track => track.stop());
             }
             stream = mediaStream;
-            video.srcObject = null;
             video.srcObject = stream;
             video.play();
           })
